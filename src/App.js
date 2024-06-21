@@ -1,24 +1,51 @@
-import logo from './logo.svg';
+
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { NavBar } from './components/navbar/navbar.component';
+import { AppRouter } from './Approuter';
+import { SearchProvider } from './services/searchcontext';
+import { UserLogin } from './components/login/login.component';
+import { ForgotPassword } from './components/login/forgotpassword.component';
+import { Register } from './components/register/register.component';
+import { PageNotFound } from './components/pagenotfount/pagenotfound.component';
+
+
+
+
+
+
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <>
+{
+  !sessionStorage.getItem("loggin") && (
+<BrowserRouter>
+<Routes>
+  <Route path='/'element={<UserLogin></UserLogin>}></Route>
+  <Route path='/forgotpass' element={<ForgotPassword></ForgotPassword>}></Route>
+  <Route path='/register' element={<Register></Register>}></Route>
+  <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
+</Routes>
+</BrowserRouter>
+
+  )
+}
+{
+  sessionStorage.getItem("loggin") && (
+
+    <SearchProvider>
+    <BrowserRouter>
+    <AppRouter></AppRouter>
+    </BrowserRouter>
+    </SearchProvider>
+  )
+}
+
+ 
+   </>
   );
 }
 
